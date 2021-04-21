@@ -10,6 +10,13 @@ const {DB, PORT} = require("./config");
 // Initialize the application
 const app = exp();
 
+// Middlewares
+app.use(cors());
+app.use(bp.json());
+
+// User router middleware
+app.use('/api/users', require("./routes/users"))
+
 // Connection to database
 const startApp = async() => {
    try {
