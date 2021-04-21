@@ -10,6 +10,8 @@ const {DB, PORT} = require("./config");
 // Initialize the application
 const app = exp();
 
+// Connection to database
+
 app.listen(PORT, () => 
     success({message: `Server started on port ${PORT}`, badge: true})
-)
+);
