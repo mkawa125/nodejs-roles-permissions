@@ -17,7 +17,7 @@ app.use(cors());
 app.use(bp.json());
 app.use(passport.initialize());
 
-require("./midddlewares/passport")(passport)
+require("./config/midddlewares/passport")(passport)
 
 // User router middleware
 app.use('/api/users', require("./modules/auth/authRoutes"))
