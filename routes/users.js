@@ -1,6 +1,6 @@
 const router = require("express").Router();
 // Bring in user registration function
-const { userRegister, userLogin, userAuthentication } = require("../utils/Auth")
+const { userRegister, userLogin, userAuthentication, serializeUser } = require("../utils/Auth")
 
 // User registration route
 router.post("/register-user", async (req, res) => {
@@ -30,7 +30,7 @@ router.post("/login-super-admin", async (req, res) => {});
 
 // Profile Route
 router.get("/profile", userAuthentication,async (req, res) => {
-    return res.json('Hello')
+    return res.json(serializeUser(req.user))
 });
 
 // Users protected route

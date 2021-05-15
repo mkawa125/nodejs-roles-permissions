@@ -112,6 +112,16 @@ async function userLogin(userDetails, role, res) {
  */
 const userAuthentication = passport.authenticate("jwt", {session: false});
 
+function serializeUser(user) {
+    return {
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        _id: user._id,
+        updatedAt: user.updatedAt,
+        createdAt: user.createdAt,
+    }
+}
 
 const validateUsername = async username => {
     let user = await User.findOne({ username });
@@ -126,5 +136,6 @@ const validateEmail= async email => {
 module.exports = {
     userRegister, 
     userLogin,
-    userAuthentication
+    userAuthentication,
+    serializeUser
 }
