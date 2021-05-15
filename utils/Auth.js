@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const passport = require("passport"); 
 const jwt = require("jsonwebtoken");
 const {SECRET} = require("../config");
+
 
 /**
  * @DESC To register the user (ADMIN, SUPPER_ADMIN, USER)
@@ -84,7 +86,7 @@ async function userLogin(userDetails, role, res) {
             return res.status(200).json({
                 message: "You have successfully logged in",
                 user: user,
-                token: token,
+                token: `Bearer ${token}`,
                 expiresIn: 168,
             });
 
@@ -105,6 +107,11 @@ async function userLogin(userDetails, role, res) {
     }
 }
 
+/**
+ * @DESC Passport middleware
+ */
+const userAuthentication = passport.authenticate("jwt", {session: false});
+
 
 const validateUsername = async username => {
     let user = await User.findOne({ username });
@@ -117,5 +124,7 @@ const validateEmail= async email => {
 };
 
 module.exports = {
-    userRegister, userLogin
+    userRegister, 
+    userLogin,
+    userAuthentication
 }
