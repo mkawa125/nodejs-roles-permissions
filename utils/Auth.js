@@ -59,7 +59,7 @@ async function userLogin(userDetails, role, res) {
 
         if (!user) {
             return res.status(404).json({
-                message: "User not found. Invalid login credential",
+                message: "User not found. Invalid login credentials",
                 success: false
             })
         }
@@ -82,7 +82,7 @@ async function userLogin(userDetails, role, res) {
             }, SECRET, { expiresIn: "7 days"});
 
             return res.status(200).json({
-                message: "Success",
+                message: "You have successfully logged in",
                 user: user,
                 token: token,
                 expiresIn: 168,
