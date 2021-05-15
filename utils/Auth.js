@@ -1,10 +1,10 @@
 const User = require("../models/user");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 /**
  * @DESC To register the user (ADMIN, SUPPER_ADMIN, USER)
 */
-const userRegister = async (userDets, role, res) => {
+async function userRegister (userDets, role, res){
     
     try {
         // Validate the username
@@ -25,7 +25,7 @@ const userRegister = async (userDets, role, res) => {
         }
 
         // Get hashed password
-        const password = await bcrypt.hash("userDets.password", 12)
+        const password = await bcrypt.hash(userDets.password, 10)
 
         // create new user
         const newUser = new User({
@@ -48,6 +48,41 @@ const userRegister = async (userDets, role, res) => {
     }
 };
 
+async function userLogin(userDetails, role, res) {
+
+    try {
+        console.log(userDetails)
+        const username = userDetails.username;
+        const password = userDetails.password;
+        const user = await User.findOne({ "username": userDetails.username });
+        const isMatch = bcrypt.compareSync(password, user.password)
+
+        if (user && isMatch) {
+            
+            return res.status(200).json({
+                message: "Success",
+                password: user.password,
+                success: false,
+                isMatch: isMatch,
+            });
+        } else {
+            return res.status(401).json({
+                message: "Invalid username or password",
+                success: false,
+        
+            });
+        }
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error occured during login",
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
 const validateUsername = async username => {
     let user = await User.findOne({ username });
     return user ? false : true
@@ -59,5 +94,5 @@ const validateEmail= async email => {
 };
 
 module.exports = {
-    userRegister
+    userRegister, userLogin
 }
