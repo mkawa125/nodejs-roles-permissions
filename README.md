@@ -1,2 +1,2 @@
 # nodejs-roles-permission
-Node js roles and permission sample project
+Node js roles and permissions API sample project
