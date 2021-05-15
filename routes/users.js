@@ -1,6 +1,8 @@
 const router = require("express").Router();
 
-/** Bring in user registration function */ 
+/** 
+ * Bring in user registration function 
+ */ 
 const { 
     userRegister,
      userLogin, 
@@ -8,14 +10,18 @@ const {
      checkRole, 
      serializeUser } = require("../utils/Auth")
 
-/** User registration route */
+/** 
+ * User registration route 
+ */
 router.post(
     "/register-user", 
     async (req, res) => {
     await userRegister(req.body, "user", res);
 });
 
-/** Admin registration route */
+/** 
+ * Admin registration route 
+ */
 router.post(
     "/register-admin", 
     async (req, res) => {
@@ -39,12 +45,14 @@ router.post(
 /** Admin login route */
 router.post(
     "/login-admin", 
-    async (req, res) => {});
+    async (req, res) => {}
+);
 
 /** SUper admin login route */
 router.post(
     "/login-super-admin", 
-    async (req, res) => {});
+    async (req, res) => {}
+);
 
 /** Profile Route */ 
 router.get(
