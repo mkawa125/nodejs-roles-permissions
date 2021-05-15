@@ -112,11 +112,22 @@ async function userLogin(userDetails, role, res) {
  */
 const userAuthentication = passport.authenticate("jwt", {session: false});
 
+/**
+ * @DESC Check role middleware
+ */
+const checkRole = roles => (req, res, next) => {
+    !roles.includes(req.user.role)
+    ? res.status(404).json("Unauthorized")
+    : next();
+    
+}
+
 function serializeUser(user) {
     return {
         username: user.username,
         email: user.email,
         name: user.name,
+        role: user.role,
         _id: user._id,
         updatedAt: user.updatedAt,
         createdAt: user.createdAt,
@@ -137,5 +148,6 @@ module.exports = {
     userRegister, 
     userLogin,
     userAuthentication,
-    serializeUser
+    serializeUser,
+    checkRole
 }
