@@ -1,5 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const {SECRET} = require("../config");
 
 /**
  * @DESC To register the user (ADMIN, SUPPER_ADMIN, USER)
@@ -51,20 +53,41 @@ async function userRegister (userDets, role, res){
 async function userLogin(userDetails, role, res) {
 
     try {
-        console.log(userDetails)
-        const username = userDetails.username;
-        const password = userDetails.password;
         const user = await User.findOne({ "username": userDetails.username });
-        const isMatch = bcrypt.compareSync(password, user.password)
+        const userInputPassword = userDetails.password;
+        const isMatch = bcrypt.compareSync(userInputPassword, user.password);
 
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found. Invalid login credential",
+                success: false
+            })
+        }
+
+        if (user.role != role) {
+            return res.status(404).json({
+                message: "Your role does not allow you to access this resource",
+                success: false
+            })
+        }
+
+        /** Check if user exist and passwords match or not*/
         if (user && isMatch) {
             
+            const token = jwt.sign({
+                user_id: user._id,
+                username: user.modelName,
+                role: user.role,
+                email: user.email,
+            }, SECRET, { expiresIn: "7 days"});
+
             return res.status(200).json({
                 message: "Success",
-                password: user.password,
-                success: false,
-                isMatch: isMatch,
+                user: user,
+                token: token,
+                expiresIn: 168,
             });
+
         } else {
             return res.status(401).json({
                 message: "Invalid username or password",
