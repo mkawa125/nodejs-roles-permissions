@@ -8,7 +8,7 @@ const {
      userLogin, 
      userAuthentication,
      checkRole, 
-     serializeUser } = require("../../utils/Auth")
+     serializeUser } = require("./authController")
 
 /** 
  * User registration route 
