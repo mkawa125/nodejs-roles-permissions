@@ -2,14 +2,24 @@ const express = require('express');
 const router = express.Router();
 const userService = require('./userService');
 
-function getAllUsers(req, res, next) {
+async function getAllUsers(req, res, next) {
 
-    console.log(req)
-    userService.getAllUsers()
-        .then(users => res.json(users))
-        .catch(err => next(err));
+    try {
+        const users = await userService.getAllUsers();
+
+        return res.status(200).json({
+            userMessage: 'Success',
+            success: true,
+            data: users
+        });
+    } catch (e) {
+        return res.status(400).json({
+            userMessage: 'Something went wrong, contact the system admin',
+            developerMessage: e.message,
+            success: false
+        });
+    }
 }
-
 
 module.exports = {
     getAllUsers
