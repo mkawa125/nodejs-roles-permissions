@@ -20,7 +20,8 @@ app.use(passport.initialize());
 require("./config/midddlewares/passport")(passport)
 
 // User router middleware
-app.use('/api/users', require("./modules/auth/authRoutes"))
+app.use('/api/auth', require("./modules/auth/authRoutes"))
+app.use('/api/users', require("./modules/users/userRoutes"))
 
 // Connection to database
 const startApp = async() => {
