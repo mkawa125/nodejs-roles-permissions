@@ -8,11 +8,11 @@ async function getAllUsers() {
     return await User.find();
 }
 
-async function geUsertById(id) {
-    return await User.findById(id);
+async function getUserById(userId) {
+    return await User.findById(userId);
 }
 
 module.exports = {
     getAllUsers,
-    geUsertById
+    getUserById
 }
