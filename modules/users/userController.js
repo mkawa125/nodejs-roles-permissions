@@ -29,7 +29,7 @@ async function getUserById(req, res) {
 
     } catch (error) {
         return res.status(404).json({
-            userMessage: 'User not found gsg',
+            userMessage: 'User not found',
             developerMessage: error.message,
             success: false,
             
@@ -38,8 +38,48 @@ async function getUserById(req, res) {
 }
 
 
+async function updateUser(req, res) {
+    try {
+        const updateUser = await userService.updateUser(req.params.userId, req.body)
+        const user = await userService.getUserById(req.params.userId);
+        return res.status(200).json({
+            userMessage: 'User Updated Successfully',
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        return res.status(404).json({
+            userMessage: 'User not found',
+            developerMessage: error.message,
+            success: false,
+            
+        });
+    }
+}
+
+async function deleteUser(req, res) {
+    try {
+        userService.deleteUser(req.params.userId)
+        const users = await userService.getAllUsers();
+        return res.status(200).json({
+            userMessage: 'User Deleted Successfully',
+            success: true,
+            data: users
+        });
+    } catch (error) {
+        return res.status(404).json({
+            userMessage: 'User not found',
+            developerMessage: error.message,
+            success: false,
+            
+        });
+    }
+}
+
 
 module.exports = {
     getAllUsers,
-    getUserById
+    getUserById,
+    updateUser,
+    deleteUser
 }
