@@ -1,8 +1,8 @@
-const User = require("../models/user");
+const User = require("../users/userModel");
 const bcrypt = require("bcryptjs");
 const passport = require("passport"); 
 const jwt = require("jsonwebtoken");
-const {SECRET} = require("../config");
+const {SECRET} = require("../../config");
 
 
 /**
@@ -55,25 +55,28 @@ async function userRegister (userDets, role, res){
 async function userLogin(userDetails, role, res) {
 
     try {
+
         const user = await User.findOne({ "username": userDetails.username });
         const userInputPassword = userDetails.password;
-        const isMatch = bcrypt.compareSync(userInputPassword, user.password);
 
         if (!user) {
-            return res.status(404).json({
+            return res.status(401).json({
                 message: "User not found. Invalid login credentials",
                 success: false
             })
         }
 
         if (user.role != role) {
-            return res.status(404).json({
+            return res.status(401).json({
                 message: "Your role does not allow you to access this resource",
                 success: false
             })
         }
 
         /** Check if user exist and passwords match or not*/
+
+        const isMatch = bcrypt.compareSync(userInputPassword, user.password);
+
         if (user && isMatch) {
             
             const token = jwt.sign({
