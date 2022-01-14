@@ -51,7 +51,7 @@ async function updateUser(req, res) {
         return res.status(404).json({
             userMessage: 'User not found',
             developerMessage: error.message,
-            success: false,
+            success: false,i
             
         });
     }
