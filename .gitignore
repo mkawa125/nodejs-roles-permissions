@@ -5,6 +5,7 @@ build/Release
 # Dependency directories
 
 /node_modules
+node_modules
 jspm_packages/
 
 # Don't send .env to github
